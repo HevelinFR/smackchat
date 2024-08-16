@@ -30,18 +30,15 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref } from "vue";
+import { ref } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
-defineOptions({
-  data() {
-    return {
-      tab: "login",
-    };
-  },
-  components: {
-    LoginRegister: defineAsyncComponent(() =>
-      import("components/LoginRegister.vue")
-    ),
-  },
-});
+// Definindo a aba inicial
+const tab = ref('login');
+
+// Importando o componente LoginRegister de forma assíncrona
+const LoginRegister = defineAsyncComponent(() =>
+  import('components/LoginRegister.vue')
+);
+
 </script>

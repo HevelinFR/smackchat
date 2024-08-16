@@ -7,45 +7,49 @@
       <q-space/>
       <q-btn type="submit" color="primary" :label="tab"></q-btn>
     </div>
-
-
   </q-form>
 </template>
 
 <script setup>
-defineOptions({
-  name: 'LoginRegister',
-  data(){
-    return {
-      formData:{
-        name: '',
-        email: '',
-        password: ''
-      }
-    }
-  },
-  methods:{
-    submitForm(){
-      if(this.tab == login){
-        console.log('login user')
-      }else{
-        console.log('register user')
-      }
-    }
-  }
-})
+import { useUserStore } from 'src/stores/store'; // Importe sua store
+import { ref } from 'vue';
 
+// Define props
 const props = defineProps({
-  tab:{
-    required: true
+  tab: {
+    required: true,
+    type: String
   },
+});
 
-})
+// Inicialize a store
+const userStore = useUserStore();
+
+// Defina os dados do formulário
+const formData = ref({
+  name: '',
+  email: '',
+  password: ''
+});
+
+// Função de envio do formulário
+function submitForm(evt) {
+  evt.preventDefault();
+
+  if (props.tab === 'login') {
+    console.log('login user');
+    // Chame a ação de login na store
+    userStore.login(formData);
+  } else {
+    console.log('register user');
+    // Chame a ação de registro na store
+    userStore.register(formData);
+  }
+}
 
 </script>
 
 <style lang="scss" scoped>
-
+/* Seu estilo aqui */
 </style>
-
 
