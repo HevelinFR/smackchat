@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { useUserStore } from 'src/stores/store'; // Importe sua store
+import { useUserStore } from 'src/stores/store'; // Importe a store
 import { ref } from 'vue';
 
 // Define props
@@ -37,13 +37,11 @@ function submitForm(evt) {
   evt.preventDefault();
 
   if (props.tab === 'login') {
-    console.log('login user');
     // Chame a ação de login na store
     userStore.login(formData);
   } else {
-    console.log('register user');
     // Chame a ação de registro na store
-    userStore.register(formData);
+    userStore.registerUser(formData.value);
   }
 }
 
