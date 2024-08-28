@@ -6,13 +6,14 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  signOut,
+  signOut
 } from "firebase/auth";
-import { getDatabase, ref, set, child, get, update } from "firebase/database";
+import { getDatabase, ref, set, child, get, update,  onValue } from "firebase/database";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
     userDetails: {},
+    users: [],
   }),
   actions: {
     async registerUser(payload) {
@@ -72,10 +73,11 @@ export const useUserStore = defineStore("user", {
                 });
                 this.updateUser({
                   userId: uid,
-                  updates:{
-                    online : true
-                  }
-                })
+                  updates: {
+                    online: true,
+                  },
+                });
+                this.getUsers();
                 this.router.push("/");
               } else {
                 console.log("No data available");
@@ -88,10 +90,10 @@ export const useUserStore = defineStore("user", {
           // User is signed out
           this.updateUser({
             userId: this.userDetails.userId,
-            updates:{
-              online : false
-            }
-          })
+            updates: {
+              online: false,
+            },
+          });
           this.userDetails = {};
           this.router.replace("/auth");
         }
@@ -99,11 +101,32 @@ export const useUserStore = defineStore("user", {
     },
     updateUser(payload) {
       const db = getDatabase();
-      update(ref(db, "users/" + payload.userId), payload.updates)
+      update(ref(db, "users/" + payload.userId), payload.updates);
+    },
+    getUsers() {
+      const db = getDatabase();
+      const dbRef = ref(db, "users/");
+      onValue(
+        dbRef,
+        (snapshot) => {
+          snapshot.forEach((childSnapshot) => {
+            this.setUsersUser({
+              userId: childSnapshot.key,
+              ...childSnapshot.val()
+            })
+          });
+        },
+        {
+          onlyOnce: true,
+        }
+      );
     },
     setUserDetails(payload) {
       this.userDetails = payload;
     },
+    setUsersUser(payload){
+      this.users.push(payload)
+    }
   },
   getters: {},
 });
