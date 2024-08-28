@@ -38,7 +38,7 @@ function submitForm(evt) {
 
   if (props.tab === 'login') {
     // Chame a ação de login na store
-    userStore.login(formData);
+    userStore.login(formData.value);
   } else {
     // Chame a ação de registro na store
     userStore.registerUser(formData.value);
