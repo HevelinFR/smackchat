@@ -6,9 +6,17 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  signOut
+  signOut,
 } from "firebase/auth";
-import { getDatabase, ref, set, child, get, update,  onValue } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  set,
+  child,
+  get,
+  update,
+  onValue,
+} from "firebase/database";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -95,6 +103,7 @@ export const useUserStore = defineStore("user", {
             },
           });
           this.userDetails = {};
+          this.users = []
           this.router.replace("/auth");
         }
       });
@@ -112,8 +121,8 @@ export const useUserStore = defineStore("user", {
           snapshot.forEach((childSnapshot) => {
             this.setUsersUser({
               userId: childSnapshot.key,
-              ...childSnapshot.val()
-            })
+              ...childSnapshot.val(),
+            });
           });
         },
         {
@@ -124,9 +133,9 @@ export const useUserStore = defineStore("user", {
     setUserDetails(payload) {
       this.userDetails = payload;
     },
-    setUsersUser(payload){
-      this.users.push(payload)
-    }
+    setUsersUser(payload) {
+      if (this.userDetails.userId != payload.userId) this.users.push(payload);
+    },
   },
   getters: {},
 });

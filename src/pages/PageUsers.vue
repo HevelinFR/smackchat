@@ -3,7 +3,7 @@
     <q-list class="full-width" bordered separator>
       <q-item
         v-for="user in users"
-        :key="user.id"
+        :key="user.userId"
         class="q-my-sm"
         to="/chat"
         clickable
@@ -29,28 +29,13 @@
   </q-page>
 </template>
 
-<script>
-export default {
-  setup() {
-    return {
-      users: [
-        {
-          id: 1,
-          name: "João",
-          online: true
-        },
-        {
-          id: 2,
-          name: "Maria",
-          online: false
-        },
-        {
-          id: 3,
-          name: "Brenda",
-          online: true
-        }
-      ],
-    };
-  },
-};
+<script setup>
+
+import { useUserStore } from "src/stores/store"; // Importe a store
+import { ref } from "vue";
+
+// Inicialize a store
+const userStore = useUserStore();
+
+const users = ref(userStore.users)
 </script>
