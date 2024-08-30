@@ -5,7 +5,7 @@
         v-for="user in users"
         :key="user.userId"
         class="q-my-sm"
-        to="/chat"
+        :to="'/chat/'+user.userId"
         clickable
         v-ripple
       >

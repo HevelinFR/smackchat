@@ -22,6 +22,7 @@ export const useUserStore = defineStore("user", {
   state: () => ({
     userDetails: {},
     users: [],
+    messages: []
   }),
   actions: {
     async registerUser(payload) {
@@ -103,7 +104,7 @@ export const useUserStore = defineStore("user", {
             },
           });
           this.userDetails = {};
-          this.users = []
+          this.users = [];
           this.router.replace("/auth");
         }
       });
@@ -124,6 +125,20 @@ export const useUserStore = defineStore("user", {
               ...childSnapshot.val(),
             });
           });
+        },
+        {
+          onlyOnce: true,
+        }
+      );
+    },
+    getMessagesByUserID(id) {
+      console.log("user:" + id);
+      const db = getDatabase();
+      const dbRef = ref(db, "chats/" + this.userDetails.userId + "/" + id);
+      onValue(
+        dbRef,
+        (snapshot) => {
+          console.log(snapshot.val())
         },
         {
           onlyOnce: true,

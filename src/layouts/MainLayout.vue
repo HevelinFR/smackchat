@@ -69,7 +69,6 @@ const route = useRoute();
 
 const title = computed(() => {
   const currentPath = route.fullPath;
-  console.log(currentPath);
 
   if (currentPath === "/") return "Bate Papo";
   else if (currentPath === "/chat") return "Chat";
